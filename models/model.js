@@ -30,17 +30,10 @@ Note.hasMany(Comment);
 Comment.belongsTo(User);
 Comment.belongsTo(Note);
 
-module.exports = { User, Note, Comment };
 
-/*
 (async () => {
   await sequelize.sync({ alter: true });
-  const jane = await User.create({ email: "Jane", password: "lmao" });
-  const user = await User.findOne({ where: { email: 'Jane' } });
-	if (user === null) {
-	  console.log('Not found!');
-	} else {
-	  console.log(user instanceof User); // true
-	  console.log(user.password); // 'My Title'
-	}
-})();*/
+})();
+
+module.exports = { User, Note, Comment };
+
