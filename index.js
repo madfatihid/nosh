@@ -65,15 +65,9 @@ app.post('/login', async (req, res) => {
 
 app.post('/register', async (req, res) => {
 	const { email, password } = req.body;
-   /*response = {
-      email:req.body.email,
-      password:req.body.password
-   };
-   console.log(response);*/
-   
   const exist = await User.findOne({ where: { email: email } });
   if(exist != null) {
-		res.render('register', {error: "Email already exist"});
+		res.render('register', {error: "Email already registered"});
 		return;
   }
    
@@ -81,5 +75,4 @@ app.post('/register', async (req, res) => {
   req.session.userId = user.id;
    console.log(user);
    res.redirect('/');
-   //res.end(JSON.stringify(response));
 })
