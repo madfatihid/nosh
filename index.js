@@ -99,18 +99,12 @@ app.post('/register', async (req, res) => {
 })
 
 app.get('/n/:id', async (req, res) => {
-	if(!req.session.userId){
-		res.redirect('/');
-	}
   const note = await Note.findOne({ where: { id: req.params.id } });
   res.render('note', {note: note, id: req.params.id });
 });
 
 
 app.post('/n/:id', async (req, res) => {
-	if(!req.session.userId){
-		res.sendStatus(400);
-	}
   const note = await Note.findOne({ where: { id: req.params.id } });
 	await note.update({ content: req.body.content, title: req.body.title });
   res.sendStatus(200);

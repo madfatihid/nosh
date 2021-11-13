@@ -87,6 +87,14 @@ $(function() {
 quill.on('text-change', function(delta) {
   change = change.compose(delta);
 });
+$( "#title" )
+  .focusout(function() {
+    $.post('/n/<%= id %>', { 
+      content: JSON.stringify(quill.getContents()).replace(/\\/g, '\\\\'),
+	  title: $( "#title" ).val()
+    });
+	console.log("fired");
+  })
 });
 
 
