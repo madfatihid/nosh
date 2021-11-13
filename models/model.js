@@ -15,7 +15,14 @@ const User = sequelize.define("user", {
 });
 
 const Note = sequelize.define("note", {
-  content: DataTypes.TEXT,
+  content: {
+    type: DataTypes.TEXT,
+    defaultValue: ""
+  },
+  title: {
+    type: DataTypes.TEXT,
+    defaultValue: "Untitled"
+  }
 });
 
 const Comment = sequelize.define("comment", {

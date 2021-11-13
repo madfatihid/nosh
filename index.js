@@ -5,11 +5,16 @@ const path = require('path');
 const sessions = require('express-session');
 const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const { 
+  v1: uuidv1,
+  v4: uuidv4,
+} = require('uuid');
 
 // Setting EJS as templating engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
+app.use('/n', express.static('public')); 
 app.use(urlencodedParser);
 
 app.use(sessions({
@@ -23,9 +28,11 @@ app.listen(3000, () => {
     console.log("APP IS LISTENING ON PORT 3000!")
 })
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
 	if(req.session.userId){
-		res.render('dashboard')
+		const notes = await Note.findAll({where: {userId: req.session.userId}, raw: true, order: [['updatedAt', 'DESC']]});
+		console.log(notes);
+		res.render('dashboard', {notes: notes})
 	} else {
 		res.render('homepage', { name: 'Monroe' })
 	}
@@ -35,6 +42,17 @@ app.get('/', (req, res) => {
 app.get('/login', async (req, res) => {
     res.render('login')
 })
+
+
+app.get('/create', async (req, res) => {
+	if(!req.session.userId){
+		res.redirect('/');
+	}
+	const note = await Note.create({ userId: req.session.userId });
+    res.redirect("/n/"+note.id);
+})
+
+
 
 
 app.get('/register', (req, res) => {
@@ -79,3 +97,21 @@ app.post('/register', async (req, res) => {
    console.log(user);
    res.redirect('/');
 })
+
+app.get('/n/:id', async (req, res) => {
+	if(!req.session.userId){
+		res.redirect('/');
+	}
+  const note = await Note.findOne({ where: { id: req.params.id } });
+  res.render('note', {note: note, id: req.params.id });
+});
+
+
+app.post('/n/:id', async (req, res) => {
+	if(!req.session.userId){
+		res.sendStatus(400);
+	}
+  const note = await Note.findOne({ where: { id: req.params.id } });
+	await note.update({ content: req.body.content, title: req.body.title });
+  res.sendStatus(200);
+});
