@@ -31,7 +31,11 @@
 			<% } %>
         <div class="list-group">
 			<% for (note in notes) { %>
-			<a href="/n/<%= notes[note].id %>" class="list-group-item list-group-item-action"><%= notes[note].title %></a>
+			
+			<span onclick="location.href='/n/<%= notes[note].id %>';" class="list-group-item d-flex justify-content-between align-items-center" style="cursor:pointer;">
+			<%= notes[note].title %>
+			<span onclick="event.stopPropagation(); location.href='/n/<%= notes[note].id %>/delete';" class="badge bg-warning badge-pill badge-round ml-1" style="cursor:pointer; z-index:10;">X</span>
+			</span>
 			<% } %>
 			
                                         </div>

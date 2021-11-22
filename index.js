@@ -109,3 +109,9 @@ app.post('/n/:id', async (req, res) => {
 	await note.update({ content: req.body.content, title: req.body.title });
   res.sendStatus(200);
 });
+app.get('/n/:id/delete', async (req, res) => {
+  await Note.destroy({
+    where: { id: req.params.id }
+	})
+   res.redirect('/');
+});
