@@ -85,14 +85,14 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/register', async (req, res) => {
-	const { email, password } = req.body;
+	const { email, password, firstName, lastName } = req.body;
   const exist = await User.findOne({ where: { email: email } });
   if(exist != null) {
 		res.render('register', {error: "Email already registered"});
 		return;
   }
    
-  const user = await User.create({ email: email, password: password });
+  const user = await User.create({ email: email, password: password, firstName: firstName, lastName: lastName });
   req.session.userId = user.id;
    console.log(user);
    res.redirect('/');

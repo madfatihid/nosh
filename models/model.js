@@ -12,6 +12,14 @@ const User = sequelize.define("user", {
     unique: true
   },
   password: DataTypes.TEXT,
+  firstName: {
+    type: DataTypes.STRING,
+    defaultValue: "{}"
+  },
+  lastName: {
+    type: DataTypes.STRING,
+    defaultValue: "{}"
+  },
 });
 
 const Note = sequelize.define("note", {
