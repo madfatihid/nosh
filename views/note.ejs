@@ -75,22 +75,35 @@
 var Delta = Quill.import('delta');
 var quill = new Quill('#editor', {
   modules: {
-    toolbar: true
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6,  false] }],
+      ['bold', 'italic', 'underline','strike'],
+      ['image', 'code-block'],
+      ['link'],
+      [{ 'script': 'sub'}, { 'script': 'super' }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['clean']
+    ]
   },
   placeholder: 'Compose an epic...',
-  theme: 'bubble'
+  theme: 'bubble'  // or 'bubble'
 });
 
 var change = new Delta();
 $(function() { 
-	quill.setContents(JSON.parse('<%- note.content %>'));
+	//quill.setContents(JSON.parse('<%- note.content %>'));
+	const value = `<%- note.content %>`;
+const delta = quill.clipboard.convert(value);
+quill.setContents(delta, 'silent');
+
 quill.on('text-change', function(delta) {
   change = change.compose(delta);
 });
 $( "#title" )
   .focusout(function() {
     $.post('/n/<%= id %>', { 
-      content: JSON.stringify(quill.getContents()).replace(/\\/g, '\\\\'),
+	  content: quill.root.innerHTML,
+      //content: JSON.stringify(quill.getContents()).replace(/\\/g, '\\\\'),
 	  title: $( "#title" ).val()
     });
 	console.log("fired");
@@ -116,7 +129,7 @@ setInterval(function() {
     */
 	console.log(JSON.stringify(quill.getContents()).replace(/\\/g, '\\\\'));
     $.post('/n/<%= id %>', { 
-      content: JSON.stringify(quill.getContents()).replace(/\\/g, '\\\\'),
+	  content: quill.root.innerHTML,
 	  title: $( "#title" ).val()
     });
     change = new Delta();

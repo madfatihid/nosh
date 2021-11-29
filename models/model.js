@@ -14,18 +14,18 @@ const User = sequelize.define("user", {
   password: DataTypes.TEXT,
   firstName: {
     type: DataTypes.STRING,
-    defaultValue: "{}"
+    defaultValue: ""
   },
   lastName: {
     type: DataTypes.STRING,
-    defaultValue: "{}"
+    defaultValue: ""
   },
 });
 
 const Note = sequelize.define("note", {
   content: {
     type: DataTypes.TEXT,
-    defaultValue: "{}"
+    defaultValue: ""
   },
   title: {
     type: DataTypes.TEXT,
