@@ -1,4 +1,5 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
+const moment = require('moment');
 
 const sequelize = new Sequelize('nosh', 'postgres', 'aaaaa', {
   host: 'localhost',
@@ -12,11 +13,7 @@ const User = sequelize.define("user", {
     unique: true
   },
   password: DataTypes.TEXT,
-  firstName: {
-    type: DataTypes.STRING,
-    defaultValue: ""
-  },
-  lastName: {
+  username: {
     type: DataTypes.STRING,
     defaultValue: ""
   },
@@ -35,6 +32,12 @@ const Note = sequelize.define("note", {
 
 const Comment = sequelize.define("comment", {
   content: DataTypes.TEXT,
+  createdAt: {
+                    type: DataTypes.DATE,             
+                  get() {
+                        return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm');
+                    }
+                },
 });
 
 User.hasMany(Note);

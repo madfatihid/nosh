@@ -85,14 +85,14 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/register', async (req, res) => {
-	const { email, password, firstName, lastName } = req.body;
+	const { email, password, username } = req.body;
   const exist = await User.findOne({ where: { email: email } });
   if(exist != null) {
 		res.render('register', {error: "Email already registered"});
 		return;
   }
    
-  const user = await User.create({ email: email, password: password, firstName: firstName, lastName: lastName });
+  const user = await User.create({ email: email, password: password, username: username });
   req.session.userId = user.id;
    console.log(user);
    res.redirect('/');
@@ -100,7 +100,13 @@ app.post('/register', async (req, res) => {
 
 app.get('/n/:id', async (req, res) => {
   const note = await Note.findOne({ where: { id: req.params.id } });
-  res.render('note', {note: note, id: req.params.id });
+  const comments = await Comment.findAll({
+	  where: { noteId: note.id },
+	  include: {
+        model: User,
+      }
+  });
+  res.render('note', {note: note, id: req.params.id, comments: comments});
 });
 
 
@@ -115,4 +121,11 @@ app.get('/n/:id/delete', async (req, res) => {
     where: { id: req.params.id }
 	})
    res.redirect('/');
+});
+
+
+app.post('/comments', async (req, res) => {
+	const { noteId, content } = req.body;
+  const comment = await Comment.create({ userId: req.session.userId, noteId: noteId, content: content });
+  res.sendStatus(200);
 });

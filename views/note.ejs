@@ -39,19 +39,47 @@
         <div id="main" class="layout-horizontal">
             <%- include('./topbar'); %>
 			<div class="content-wrapper container mb-10" style="max-width: 800px;">
-     <div class="card">
-                        <div class="card-header">
-						
-  <input type="text" id="title" value="<%= note.title %>">
-                        </div>
-                        <div class="card-body">
+				<div class="card">
+					<div class="card-header">
+						<input type="text" id="title" value="<%= note.title %>">
+					</div>
+					<div class="card-body">
 						<div id="editor">
-  <p>Hello World!</p>
-  <p>Some initial <strong>bold</strong> text</p>
-  <p><br></p>
-</div>
+							<p>Hello World!</p>
+							<p>Some initial <strong>bold</strong> text</p>
+							<p><br></p>
 						</div>
-                    </div>
+					</div>
+				</div>
+				<div class="mb-4">
+					<h4>Add Comment</h4>
+					<div class="card" style="margin-bottom:0.8em">
+						<div class="card-body">
+							<div 
+							  style="outline:none;"
+							  role="textbox"
+							  id="comment-content"
+							  contenteditable
+							>Comment</div>
+						</div>
+					</div>
+					<a href="#" class="btn btn-primary" id="comment-button">Comment</a>
+				</div>
+				<div>
+				
+					<% for (comment in comments) { %>
+						<div class="card mb-3">
+							<div class="card-header pb-0">
+								<h4 class="card-title"><%= comments[comment].user.username %></h4>
+								<h6 class="card-subtitle" style="font-weight: 600; font-size: 0.9rem; color:#aaa;"><%= comments[comment].createdAt %></h6>
+							</div>
+							<div class="card-body">
+								<%= comments[comment].content %>
+							</div>
+						</div>
+					<% } %>
+					
+				</div>
             </div>
             <footer>
                 <div class="container">
@@ -108,6 +136,14 @@ $( "#title" )
     });
 	console.log("fired");
   })
+});
+
+$("#comment-button").click(function(){
+    $.post('/comments', { 
+	  noteId: <%= id %>,
+	  content: $( "#comment-content" ).text()
+    });
+	console.log("fired");
 });
 
 
