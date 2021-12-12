@@ -131,10 +131,9 @@ $( "#title" )
   .focusout(function() {
     $.post('/n/<%= id %>', { 
 	  content: quill.root.innerHTML,
-      //content: JSON.stringify(quill.getContents()).replace(/\\/g, '\\\\'),
 	  title: $( "#title" ).val()
     });
-	console.log("fired");
+    change = new Delta();
   })
 });
 
@@ -151,20 +150,11 @@ $("#comment-button").click(function(){
 
 
 // Store accumulated changes
-
 // Save periodically
 setInterval(function() {
   if (change.length() > 0) {
     console.log('Saving changes', change);
-    /* 
-    Send partial changes
-    $.post('/your-endpoint', { 
-      partial: JSON.stringify(change) 
-    });
-    
-    Send entire document
-    */
-	console.log(JSON.stringify(quill.getContents()).replace(/\\/g, '\\\\'));
+	
     $.post('/n/<%= id %>', { 
 	  content: quill.root.innerHTML,
 	  title: $( "#title" ).val()
@@ -174,11 +164,11 @@ setInterval(function() {
 }, 5*1000);
 
 // Check for unsaved data
-window.onbeforeunload = function() {
+/*window.onbeforeunload = function() {
   if (change.length() > 0) {
     return 'There are unsaved changes. Are you sure you want to leave?';
   }
-}
+}*/
 </script>
 
 
