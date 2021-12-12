@@ -119,7 +119,6 @@ var quill = new Quill('#editor', {
 
 var change = new Delta();
 $(function() { 
-	//quill.setContents(JSON.parse('<%- note.content %>'));
 	const value = `<%- note.content %>`;
 const delta = quill.clipboard.convert(value);
 quill.setContents(delta, 'silent');
