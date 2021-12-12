@@ -99,6 +99,9 @@ app.post('/register', async (req, res) => {
 })
 
 app.get('/n/:id', async (req, res) => {
+	if(!req.session.userId){
+		res.redirect('/');
+	}
   const note = await Note.findOne({ where: { id: req.params.id } });
   const comments = await Comment.findAll({
 	  where: { noteId: note.id },

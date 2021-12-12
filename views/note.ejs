@@ -63,7 +63,7 @@
 							>Comment</div>
 						</div>
 					</div>
-					<a href="#" class="btn btn-primary" id="comment-button">Comment</a>
+					<a class="btn btn-primary" id="comment-button">Comment</a>
 				</div>
 				<div>
 				
@@ -144,6 +144,7 @@ $("#comment-button").click(function(){
 	  content: $( "#comment-content" ).text()
     });
 	console.log("fired");
+	location.reload();
 });
 
 
