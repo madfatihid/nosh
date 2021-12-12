@@ -10,6 +10,8 @@ const {
   v4: uuidv4,
 } = require('uuid');
 
+const port = process.env.PORT || 3000;
+
 // Setting EJS as templating engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -24,8 +26,8 @@ app.use(sessions({
     resave: false
 }));
 
-app.listen(3000, () => {
-    console.log("APP IS LISTENING ON PORT 3000!")
+app.listen(port, () => {
+    console.log("APP IS LISTENING ON PORT ${port}!")
 })
 
 app.get('/', async (req, res) => {
